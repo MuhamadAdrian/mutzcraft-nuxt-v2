@@ -49,4 +49,15 @@ export const actions = {
       'Success. Nuxt-fire Objects can be accessed in store actions via this.$fire___'
     )
   },
+
+  createNewUser({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      $fire___.auth
+        .createuserWithEmailAndPassword(payload.email, payload.password)
+        .then((result) => {
+          resolve(result)
+        })
+        .catch((err) => reject(err))
+    })
+  },
 }

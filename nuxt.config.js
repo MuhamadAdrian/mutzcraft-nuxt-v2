@@ -39,6 +39,10 @@ export default {
         path: '~/components/admin/',
         prefix: 'Admin',
       },
+      {
+        path: '~/components/auth/',
+        prefix: 'Auth',
+      },
     ],
   },
 

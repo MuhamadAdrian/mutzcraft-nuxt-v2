@@ -74,11 +74,12 @@
 						</button>
 					</div>
 					<div class="register">
-						<button
+						<nuxt-link
+							to="/auth/register/"
 							class="text-sm text-indigo-500 my-auto inline-block px-4 py-2 hover:text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 rounded-md"
 						>
 							Daftar
-						</button>
+						</nuxt-link>
 					</div>
 				</div>
 			</div>
