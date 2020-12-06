@@ -8,6 +8,15 @@
 	</div>
 </template>
 
+<script>
+export default {
+	mounted() {
+		let user = this.$store.state.auth.user
+		console.log(user)
+	},
+}
+</script>
+
 <style>
 html {
 	font-family: 'Poppins', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,

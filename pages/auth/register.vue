@@ -56,9 +56,19 @@ export default {
 			},
 		}
 	},
+
+	computed: {
+		message() {
+			return this.$store.state.auth.message
+		},
+	},
 	methods: {
 		createUser() {
-			this.$store.dispatch('auth/createNewUser').then((res) => console.log(res))
+			if (this.message == null) {
+				this.$store.dispatch('auth/createNewUser', this.user)
+			}
+			return
+
 			/*this.$fire.auth
 				.createUserWithEmailAndPassword(this.user.email, this.user.password)
 				.then((result) => {

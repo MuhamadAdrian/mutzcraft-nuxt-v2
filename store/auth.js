@@ -38,6 +38,7 @@ export const actions = {
       return
     }
     commit('SET_AUTH_USER', { authUser })
+    commit('SET_CURRENT_USER', true)
   },
 
   checkVuexStore(ctx) {
@@ -50,14 +51,58 @@ export const actions = {
     )
   },
 
+  //My Authentication//******************* joss */
+
   createNewUser({ commit }, payload) {
-    return new Promise((resolve, reject) => {
-      $fire___.auth
-        .createuserWithEmailAndPassword(payload.email, payload.password)
-        .then((result) => {
-          resolve(result)
-        })
-        .catch((err) => reject(err))
-    })
+    this.$fire.auth
+      .createUserWithEmailAndPassword(payload.email, payload.password)
+      .then((res) => {
+        let user = res.user
+        let message = {}
+        message.validate = true
+        message.errMsg =
+          'Success, please check your email to verify your account :)'
+        commit('SET_MESSAGE', message)
+      })
+      .catch((err) => {
+        let message = {}
+        message.validate = false
+        message.errMsg = err.message
+        commit('SET_MESSAGE', message)
+      })
+  },
+}
+
+export const state = () => ({
+  message: null,
+  validate: null,
+  user: null,
+  currentUser: false,
+})
+
+export const getters = {
+  message: (state) => state.message,
+  validate: (state) => state.validate,
+  currentUser: (state) => state.currentUser,
+}
+
+export const mutations = {
+  SET_AUTH_USER(state, { authUser }) {
+    console.log(authUser)
+    state.user = {
+      uid: authUser.uid,
+      email: authUser.email,
+      photoURL: authUser.photoURL,
+      phoneNumber: authUser.phoneNumber,
+      emailVerified: authUser.emailVerified,
+    }
+  },
+
+  SET_CURRENT_USER(state, payload) {
+    state.currentUser = payload
+  },
+  SET_MESSAGE(state, { validate, errMsg }) {
+    state.message = errMsg
+    state.validate = validate
   },
 }
