@@ -1,55 +1,17 @@
-export default {
-  async nuxtServerInit({ dispatch }, ctx) {
-    if (this.$fire.auth === null) {
-      throw 'nuxtServerInit Example not working - this.$fire.auth cannot be accessed.'
-    }
+import Cookie from 'js-cookie'
 
-    if (ctx.$fire.auth === null) {
-      throw 'nuxtServerInit Example not working - ctx.$fire.auth cannot be accessed.'
-    }
+export const state = () => ({
+  message: null,
+  success: null,
+  hasRegistered: false,
+  hasLogin: false,
+  user: null,
+  currentUser: false,
+  timer: null,
+  showCountdown: false,
+})
 
-    if (ctx.app.$fire.auth === null) {
-      throw 'nuxtServerInit Example not working - ctx.$fire.auth cannot be accessed.'
-    }
-
-    // INFO -> Nuxt-fire Objects can be accessed in nuxtServerInit action via this.$fire___, ctx.$fire___ and ctx.app.$fire___'
-
-    /** Get the VERIFIED authUser from the server */
-    if (ctx.res && ctx.res.locals && ctx.res.locals.user) {
-      const { allClaims: claims, ...authUser } = ctx.res.locals.user
-
-      console.info(
-        'Auth User verified on server-side. User: ',
-        authUser,
-        'Claims:',
-        claims
-      )
-
-      await dispatch('onAuthStateChanged', {
-        authUser,
-        claims,
-      })
-    }
-  },
-
-  onAuthStateChanged({ commit }, { authUser }) {
-    if (!authUser) {
-      commit('RESET_STORE')
-      return
-    }
-    commit('SET_AUTH_USER', { authUser })
-    commit('SET_CURRENT_USER', true)
-  },
-
-  checkVuexStore(ctx) {
-    if (this.$fire.auth === null) {
-      throw 'Vuex Store example not working - this.$fire.auth cannot be accessed.'
-    }
-
-    alert(
-      'Success. Nuxt-fire Objects can be accessed in store actions via this.$fire___'
-    )
-  },
+export const actions = {
   createNewUser({ commit }, payload) {
     this.$fire.auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
@@ -117,7 +79,6 @@ export default {
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         let user = res.user
-        console.log(user.uid)
         if (!user.emailVerified) {
           let message = {}
           message.success = false
@@ -132,12 +93,12 @@ export default {
               emailVerified: user.emailVerified,
             })
             .then(() => {
-              user
-                .getIdToken(true)
-                .then((idToken) => commit('SET_TOKEN', idToken))
               let message = {}
               message.success = true
               message.errMsg = `Authenticated as ${user.email}`
+              user.getIdToken(true).then((token) => {
+                Cookie.set('access_token', token)
+              })
               commit('UPDATE_USER', user)
               commit('SET_MESSAGE', message)
               commit('SET_HAS_LOGIN', true)
@@ -156,5 +117,66 @@ export default {
         message.errMsg = err.message
         commit('SET_MESSAGE', message)
       })
+  },
+}
+
+export const mutations = {
+  RESET_STORE: (state) => {
+    Cookie.remove('access_token')
+    state.user = null
+  },
+
+  UPDATE_USER(state, authUser) {
+    state.user = {
+      uid: authUser.uid,
+      email: authUser.email,
+      emailVerified: authUser.emailVerified,
+      displayName: authUser.displayName,
+      phoneNumber: authUser.phoneNumber,
+      photoURL: authUser.photoURL,
+    }
+  },
+
+  SET_AUTH_USER: (state, { authUser }) => {
+    state.user = {
+      uid: authUser.uid,
+      email: authUser.email,
+      emailVerified: authUser.emailVerified,
+      displayName: authUser.displayName,
+      phoneNumber: authUser.phoneNumber,
+      photoURL: authUser.photoURL,
+    }
+  },
+  UPDATE_USER_FROM_JWT: (state, authUser) => {
+    state.user = authUser
+  },
+
+  SET_COUNTDOWN(state) {
+    state.timer = 50
+    let countdown = setInterval(() => {
+      state.timer--
+      if (state.timer == 0) {
+        clearInterval(countdown)
+      }
+    }, 1000)
+  },
+  SET_SHOW_COUNTDOWN(state, payload) {
+    state.showCountdown = payload
+  },
+
+  SET_CURRENT_USER(state, payload) {
+    state.currentUser = payload
+  },
+
+  SET_MESSAGE(state, { success, errMsg }) {
+    state.message = errMsg
+    state.success = success
+  },
+
+  SET_HAS_REGISTERED(state, payload) {
+    state.hasRegistered = payload
+  },
+  SET_HAS_LOGIN(state, payload) {
+    state.hasLogin = payload
   },
 }

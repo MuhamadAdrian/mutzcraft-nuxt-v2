@@ -59,13 +59,13 @@ export default {
 
 	computed: {
 		message() {
-			return this.$store.state.message
+			return this.$store.state.users.message
 		},
 	},
 	methods: {
 		createUser() {
 			if (this.message == null) {
-				this.$store.dispatch('createNewUser', this.user)
+				this.$store.dispatch('users/createNewUser', this.user)
 			}
 			return
 

@@ -124,7 +124,7 @@ export default {
 	},
 	computed: {
 		user() {
-			let user = this.$store.state.user
+			let user = this.$store.state.users.user
 			if (user) {
 				return user
 			} else {
@@ -132,7 +132,7 @@ export default {
 			}
 		},
 		currentUser() {
-			let currentUser = this.$store.state.currentUser
+			let currentUser = this.$store.state.users.currentUser
 			if (currentUser) {
 				return true
 			} else {
@@ -144,7 +144,8 @@ export default {
 	methods: {
 		signOut() {
 			this.$fire.auth.signOut().then(() => {
-				this.$store.commit('RESET_STORE')
+				this.$store.commit('users/RESET_STORE')
+				this.$store.commit('users/SET_CURRENT_USER', false)
 			})
 		},
 		toLogin() {

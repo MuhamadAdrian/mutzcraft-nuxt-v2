@@ -56,7 +56,6 @@
 
 <script>
 export default {
-	middleware: 'authenticated',
 	layout: 'auth',
 	data() {
 		return {
@@ -68,19 +67,16 @@ export default {
 	},
 
 	computed: {
-		showCountdown() {
-			return this.$store.getters.showCountdown
-		},
 		message() {
-			return this.$store.state.message
+			return this.$store.state.users.message
 		},
 		timer() {
-			return this.$store.getters.timer
+			return this.$store.state.users.timer
 		},
 	},
 	methods: {
 		login() {
-			this.$store.dispatch('loginAction', this.user)
+			this.$store.dispatch('users/loginAction', this.user)
 		},
 
 		resendEmailVerification() {

@@ -11,10 +11,7 @@
 <script>
 export default {
 	name: 'default',
-	mounted() {
-		let user = this.$store.state.user
-		console.log(user)
-	},
+	mounted() {},
 }
 </script>
 

@@ -33,29 +33,31 @@ export default {
 	computed: {
 		hasLogin: {
 			get() {
-				return this.$store.state.hasLogin
+				return this.$store.state.users.hasLogin
 			},
 			set(newVal) {
-				this.$store.commit('SET_HAS_LOGIN', newVal)
+				this.$store.commit('users/SET_HAS_LOGIN', newVal)
 			},
 		},
 		hasRegistered: {
 			get() {
-				return this.$store.state.hasRegistered
+				return this.$store.state.users.hasRegistered
 			},
 			set(newVal) {
-				this.$store.commit('SET_HAS_REGISTERED', newVal)
+				this.$store.commit('users/SET_HAS_REGISTERED', newVal)
 			},
 		},
-		success() {
-			return this.$store.state.success
+		success: {
+			get() {
+				return this.$store.state.users.success
+			},
 		},
 		message: {
 			get() {
-				return this.$store.state.message
+				return this.$store.state.users.message
 			},
 			set(newVal) {
-				this.$store.commit('SET_MESSAGE', {
+				this.$store.commit('users/SET_MESSAGE', {
 					success: null,
 					errMsg: newVal,
 				})
