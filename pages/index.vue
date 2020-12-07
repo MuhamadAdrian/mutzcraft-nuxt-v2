@@ -22,7 +22,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+	head: {
+		title: 'Mutzcraft | Website penjual produk rajut pertama di Indonesia',
+	},
+}
 </script>
 
 <style>

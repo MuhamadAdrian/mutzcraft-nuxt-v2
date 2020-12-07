@@ -10,8 +10,9 @@
 
 <script>
 export default {
+	name: 'default',
 	mounted() {
-		let user = this.$store.state.auth.user
+		let user = this.$store.state.user
 		console.log(user)
 	},
 }

@@ -64,9 +64,12 @@
 						</transition>
 					</header>
 					<ul class="list-none">
-						<li class="py-2">
-							<p class="text-sm text-gray-600">{{ user.email }}</p>
-						</li>
+						<client-only placeholder="Loading">
+							<li class="py-2">
+								<p class="text-sm text-gray-600">{{ user.email }}</p>
+								<p>test</p>
+							</li>
+						</client-only>
 					</ul>
 				</div>
 			</div>
@@ -85,14 +88,19 @@ export default {
 
 	computed: {
 		user() {
-			return this.$store.state.auth.user
+			let user = this.$store.state.user
+			if (user && user.emailVerified) {
+				return user
+			} else {
+				return ''
+			}
 		},
 		fabClicked: {
 			get() {
-				return this.$store.getters.fabClicked
+				return this.$store.state.sideHandlers.fabClicked
 			},
 			set(newValue) {
-				this.$store.commit('setFabClicked', newValue)
+				this.$store.commit('sideHandlers/setFabClicked', newValue)
 			},
 		},
 	},

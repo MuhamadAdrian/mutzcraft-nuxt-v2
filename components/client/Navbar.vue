@@ -27,7 +27,7 @@
 					</li>
 				</ul>
 				<div class="brand text-indigo-400">
-					<a href="3" class="sm:text-xl text-lg font-semibold">Mutzcraft</a>
+					<a href="#" class="sm:text-xl text-lg font-semibold">Mutzcraft</a>
 				</div>
 				<div class="tool flex items-center">
 					<button
@@ -66,37 +66,49 @@
 							></path>
 						</svg>
 					</button>
-					<div class="login mr-2">
-						<button
-							class="text-sm text-white bg-indigo-500 hover:bg-indigo-700 transition-colors duration-200 my-auto inline-block px-4 py-2 rounded-md"
+					<client-only>
+						<div
+							v-if="!currentUser || (user && !user.emailVerified)"
+							class="login mr-2"
 						>
-							Masuk
-						</button>
-					</div>
-					<div v-if="!currentUser" class="register">
-						<nuxt-link
-							to="/auth/register/"
+							<button
+								@click="toLogin()"
+								class="text-sm text-white bg-indigo-500 hover:bg-indigo-700 transition-colors duration-200 my-auto inline-block px-4 py-2 rounded-md"
+							>
+								Masuk
+							</button>
+						</div>
+						<button
+							slot="placeholder"
 							class="text-sm text-indigo-500 my-auto inline-block px-4 py-2 hover:text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 rounded-md"
 						>
-							Daftar
-						</nuxt-link>
-					</div>
-					<div v-if="currentUser" class="verification">
-						<nuxt-link
-							to="/auth/register/"
-							class="text-sm bg-yellow-100 text-yellow-700 my-auto inline-block px-4 py-2 hover:bg-yellow-200 transition-colors duration-200 rounded-md"
-						>
-							Verifikasi
-						</nuxt-link>
-					</div>
-					<div v-if="user && user.emailVerified" class="logout">
-						<nuxt-link
-							to="/auth/register/"
-							class="text-sm bg-red-100 text-red-700 my-auto inline-block px-4 py-2 hover:bg-red-200 transition-colors duration-200 rounded-md"
-						>
-							Logout
-						</nuxt-link>
-					</div>
+							Loading
+						</button>
+						<div v-if="!currentUser" class="register">
+							<nuxt-link
+								to="/auth/register/"
+								class="text-sm text-indigo-500 my-auto inline-block px-4 py-2 hover:text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 rounded-md"
+							>
+								Daftar
+							</nuxt-link>
+						</div>
+						<div v-if="currentUser && !user.emailVerified" class="verification">
+							<nuxt-link
+								to="/auth/register/"
+								class="text-sm bg-yellow-100 text-yellow-700 my-auto inline-block px-4 py-2 hover:bg-yellow-200 transition-colors duration-200 rounded-md"
+							>
+								Verifikasi
+							</nuxt-link>
+						</div>
+						<div class="logout" v-if="currentUser && user.emailVerified">
+							<button
+								@click="signOut()"
+								class="text-sm bg-red-100 text-red-700 my-auto inline-block px-4 py-2 hover:bg-red-200 transition-colors duration-200 rounded-md"
+							>
+								Logout
+							</button>
+						</div>
+					</client-only>
 				</div>
 			</div>
 		</div>
@@ -112,10 +124,31 @@ export default {
 	},
 	computed: {
 		user() {
-			return this.$store.state.auth.user
+			let user = this.$store.state.user
+			if (user) {
+				return user
+			} else {
+				false
+			}
 		},
 		currentUser() {
-			return this.$store.state.auth.currentUser
+			let currentUser = this.$store.state.currentUser
+			if (currentUser) {
+				return true
+			} else {
+				return false
+			}
+		},
+	},
+
+	methods: {
+		signOut() {
+			this.$fire.auth.signOut().then(() => {
+				this.$store.commit('RESET_STORE')
+			})
+		},
+		toLogin() {
+			this.$router.push('/auth/login/')
 		},
 	},
 }

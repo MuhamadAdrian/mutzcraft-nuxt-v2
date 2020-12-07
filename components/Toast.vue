@@ -3,7 +3,7 @@
 		<transition name="slide-up-fade">
 			<div
 				v-if="message"
-				:class="[validate ? 'bg-green-500' : 'bg-red-500']"
+				:class="[success ? 'bg-green-500' : 'bg-red-500']"
 				class="content flex items-center rounded-md p-3 shadow-md my-3"
 			>
 				<span class="mr-3">
@@ -31,16 +31,32 @@
 <script>
 export default {
 	computed: {
-		validate() {
-			return this.$store.state.auth.validate
+		hasLogin: {
+			get() {
+				return this.$store.state.hasLogin
+			},
+			set(newVal) {
+				this.$store.commit('SET_HAS_LOGIN', newVal)
+			},
+		},
+		hasRegistered: {
+			get() {
+				return this.$store.state.hasRegistered
+			},
+			set(newVal) {
+				this.$store.commit('SET_HAS_REGISTERED', newVal)
+			},
+		},
+		success() {
+			return this.$store.state.success
 		},
 		message: {
 			get() {
-				return this.$store.state.auth.message
+				return this.$store.state.message
 			},
 			set(newVal) {
-				this.$store.commit('auth/SET_MESSAGE', {
-					validate: null,
+				this.$store.commit('SET_MESSAGE', {
+					success: null,
 					errMsg: newVal,
 				})
 			},
@@ -54,11 +70,20 @@ export default {
 			}, 3000)
 		},
 
-		validate(value) {
-			if (value) {
+		hasLogin(hasLogin) {
+			if (hasLogin) {
 				setTimeout(() => {
 					this.$router.replace('/')
-				}, 3000)
+					this.hasLogin = false
+				}, 2000)
+			}
+		},
+		hasRegistered(hasRegistered) {
+			if (hasRegistered) {
+				setTimeout(() => {
+					this.$router.replace('/auth/login/')
+					this.hasRegistered = false
+				}, 2000)
 			}
 		},
 	},
@@ -75,7 +100,7 @@ export default {
 	@apply opacity-0 transform translate-y-3;
 }
 .slide-up-fade-enter-to,
-slide-up-fade-leave {
+.slide-up-fade-leave {
 	@apply opacity-100 transform translate-y-0;
 }
 </style>

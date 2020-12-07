@@ -1,0 +1,12 @@
+.layout-enter-active,
+.layout-leave-active {
+	@apply transition-all duration-200 ease-in-out;
+}
+.layout-enter,
+.layout-leave-to {
+	@apply opacity-0 transform translate-y-3;
+}
+.layout-enter-to,
+.layout-leave {
+	@apply opacity-100 transform translate-y-0;
+}

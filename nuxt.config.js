@@ -5,7 +5,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'anuasdasdasd' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -21,8 +21,14 @@ export default {
     ],
   },
 
+  //layout transition
+  layoutTransition: {
+    name: 'layout',
+    mode: 'out-in',
+  },
+
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['~/assets/main.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [],
@@ -66,13 +72,32 @@ export default {
     services: {
       auth: {
         initialize: {
-          onAuthStateChangedAction: 'auth/onAuthStateChanged',
+          onAuthStateChangedAction: 'onAuthStateChanged',
         },
         ssr: true,
-      }, // Just as example. Can be any other service.
+      },
+      firestore: {
+        memoryOnly: false,
+      },
     },
   },
+  pwa: {
+    // disable the modules you don't need
+    meta: false,
+    icon: false,
+    // if you omit a module key form configuration sensible defaults will be applied
+    // manifest: false,
 
+    workbox: {
+      importScripts: [
+        // ...
+        '/firebase-auth-sw.js',
+      ],
+      // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
+      // only set this true for testing and remember to always clear your browser cache in development
+      dev: false,
+    },
+  },
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios

@@ -26,7 +26,7 @@ export default {
 	},
 	methods: {
 		fabClick() {
-			this.$store.commit('setFabClicked')
+			this.$store.commit('sideHandlers/setFabClicked')
 		},
 	},
 }
