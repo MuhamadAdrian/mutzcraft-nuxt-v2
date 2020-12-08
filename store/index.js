@@ -22,10 +22,6 @@ export const actions = {
         emailVerified: decoded.email_verified,
       })
       commit('users/SET_CURRENT_USER', true)
-      commit('users/SET_MESSAGE', {
-        success: true,
-        errMsg: `Authenticated as ${decoded.email}`,
-      })
     }
 
     /** Get the VERIFIED authUser from the server */
@@ -48,10 +44,10 @@ export const actions = {
 
   onAuthStateChanged({ commit }, { authUser }) {
     if (!authUser) {
-      commit('users/RESET_STORE')
+      commit('users/RESET_STORE', { root: true })
       return
     }
-    commit('users/SET_AUTH_USER', { authUser })
-    commit('users/SET_CURRENT_USER', true)
+    commit('users/SET_AUTH_USER', { authUser }, { root: true })
+    commit('users/SET_CURRENT_USER', true, { root: true })
   },
 }

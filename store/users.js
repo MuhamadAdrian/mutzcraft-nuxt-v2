@@ -12,6 +12,16 @@ export const state = () => ({
 })
 
 export const actions = {
+  resendEmail({ commit }) {
+    let user = this.$fire.auth.currentUser
+    user.sendEmailVerification().then(() => {
+      let message = {}
+      message.success = true
+      message.errMsg = `The verification email has been sent back, please check it "${user.email}"`
+      commit('SET_MESSAGE', message)
+      commit('SET_COUNTDOWN')
+    })
+  },
   createNewUser({ commit }, payload) {
     this.$fire.auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
@@ -74,12 +84,15 @@ export const actions = {
       })
   },
 
-  loginAction({ commit, dispatch }, { email, password }) {
+  loginAction({ commit, dispatch, state }, { email, password }) {
     this.$fire.auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         let user = res.user
         if (!user.emailVerified) {
+          if (state.timer == null || state.timer == 0) {
+            dispatch('resendEmail')
+          }
           let message = {}
           message.success = false
           message.errMsg = `Please verify you email "${user.email}" first, or resend the email`
@@ -93,12 +106,12 @@ export const actions = {
               emailVerified: user.emailVerified,
             })
             .then(() => {
-              let message = {}
-              message.success = true
-              message.errMsg = `Authenticated as ${user.email}`
               user.getIdToken(true).then((token) => {
                 Cookie.set('access_token', token)
               })
+              let message = {}
+              message.success = true
+              message.errMsg = `Authenticated as ${user.email}`
               commit('UPDATE_USER', user)
               commit('SET_MESSAGE', message)
               commit('SET_HAS_LOGIN', true)
@@ -124,17 +137,12 @@ export const mutations = {
   RESET_STORE: (state) => {
     Cookie.remove('access_token')
     state.user = null
+    state.message = null
+    state.success = null
   },
 
-  UPDATE_USER(state, authUser) {
-    state.user = {
-      uid: authUser.uid,
-      email: authUser.email,
-      emailVerified: authUser.emailVerified,
-      displayName: authUser.displayName,
-      phoneNumber: authUser.phoneNumber,
-      photoURL: authUser.photoURL,
-    }
+  UPDATE_USER: (state, authUser) => {
+    state.user = authUser
   },
 
   SET_AUTH_USER: (state, { authUser }) => {

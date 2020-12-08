@@ -102,10 +102,24 @@
 						</div>
 						<div class="logout" v-if="currentUser && user.emailVerified">
 							<button
-								@click="signOut()"
-								class="text-sm bg-red-100 text-red-700 my-auto inline-block px-4 py-2 hover:bg-red-200 transition-colors duration-200 rounded-md"
+								@click="toggleSide()"
+								class="text-xs bg-gray-100 text-gray-600 my-auto flex items-center px-4 py-2 hover:bg-gray-300 transition-colors duration-200 rounded-md"
 							>
-								Logout
+								{{ user.displayName }}
+								<svg
+									class="w-6 h-6 ml-4"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M4 8h16M4 16h16"
+									></path>
+								</svg>
 							</button>
 						</div>
 					</client-only>
@@ -142,12 +156,10 @@ export default {
 	},
 
 	methods: {
-		signOut() {
-			this.$fire.auth.signOut().then(() => {
-				this.$store.commit('users/RESET_STORE')
-				this.$store.commit('users/SET_CURRENT_USER', false)
-			})
+		toggleSide() {
+			this.$store.commit('sideHandlers/setFabClicked')
 		},
+
 		toLogin() {
 			this.$router.push('/auth/login/')
 		},
@@ -155,31 +167,7 @@ export default {
 }
 </script>
 
-<style>
-.slide-enter-active,
-.slide-leave-active {
-	@apply transition-transform duration-300;
-}
-.slide-enter,
-.slide-leave-to {
-	@apply transform -translate-x-full;
-}
-.slide-leave,
-.slide-enter-to {
-	@apply transform translate-x-0;
-}
-.fade-enter-active,
-.fade-leave-active {
-	@apply transition-opacity duration-500;
-}
-.fade-enter,
-.fade-leave-to {
-	@apply opacity-0;
-}
-.fade-leave,
-.fade-enter-to {
-	@apply opacity-50;
-}
+<style scoped>
 .nuxt-link-exact-active {
 	@apply dark:bg-gray-800 dark:text-gray-200 subpixel-antialiased rounded-md inline-block my-auto px-4 py-2 bg-indigo-100 text-indigo-600;
 }

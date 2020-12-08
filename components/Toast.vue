@@ -1,5 +1,7 @@
 <template>
-	<div class="container mx-auto max-w-md fixed bottom-0 md:px-0 sm:px-1 px-4">
+	<div
+		class="container mx-auto max-w-md fixed bottom-0 md:px-0 sm:px-1 px-4 z-50"
+	>
 		<transition name="slide-up-fade">
 			<div
 				v-if="message"

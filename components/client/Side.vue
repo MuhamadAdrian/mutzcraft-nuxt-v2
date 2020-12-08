@@ -1,17 +1,17 @@
 <template>
 	<!--SideNav -->
-	<div class="side z-50 fixed top-0 left-0">
+	<div class="">
 		<transition name="fade" mode="out-in">
 			<div
-				@click="fabClicked = !fabClicked"
+				@click="closeSide()"
 				v-if="fabClicked"
-				class="overlay fixed transition bg-black opacity-50 w-full h-full z-40"
+				class="overlay fixed transition bg-black opacity-50 w-full h-full z-50"
 			></div>
 		</transition>
 		<transition name="slide" mode="out-in">
 			<div
 				v-if="fabClicked"
-				class="side-menu fixed top-0 left-0 z-50 w-4/5 h-full bg-white dark:bg-gray-900 transition-all duration-300"
+				class="side-menu fixed top-0 left-0 z-50 w-4/5 md:w-1/4 h-full bg-white dark:bg-gray-900 transition-all duration-300"
 			>
 				<div class="container mx-auto px-4">
 					<header
@@ -63,17 +63,173 @@
 							</button>
 						</transition>
 					</header>
-					<ul class="list-none">
-						<client-only placeholder="Loading">
-							<li class="py-2">
-								<p class="text-sm text-gray-600">{{ user.email }}</p>
-								<p>test</p>
-							</li>
-						</client-only>
+				</div>
+
+				<div
+					@click="$router.push('/auth/login/')"
+					v-if="!user"
+					class="p-2 bg-indigo-500 shadow-md text-white rounded-md flex items-center"
+				>
+					<img
+						src="@/assets/img/topography.svg"
+						alt=""
+						class="w-16 h-16 rounded-full object-cover object-center mr-4"
+					/>
+					<p>Login</p>
+				</div>
+				<client-only>
+					<button
+						@click="$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', true)"
+						class="flex w-full box-border truncate items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
+					>
+						<img
+							v-if="user && !user.photoURL"
+							src="@/assets/img/topography.svg"
+							alt=""
+							class="w-16 h-16 rounded-full object-cover object-center mr-3"
+						/>
+						<div class="desc text-left">
+							<p
+								class="text-base font-semibold text-gray-600 truncate dark:text-gray-100"
+							>
+								{{ user.displayName }}
+							</p>
+							<p class="text-xs text-gray-400 mb-3 truncate dark:text-gray-400">
+								{{ user.email }}
+							</p>
+							<p
+								v-if="user && user.emailVerified"
+								class="text-xs flex justify-between items-center font-semibold text-indigo-500"
+							>
+								<span> EXP 100 </span>
+								<span>
+									<svg
+										class="w-6 h-6"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+										></path>
+									</svg>
+								</span>
+							</p>
+						</div>
+					</button>
+				</client-only>
+
+				<div
+					class="menu container mx-auto px-4 absolute bottom-0 left-0 p-3 w-full"
+				>
+					<ul
+						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid md:hidden block mb-3"
+					>
+						<p class="text-xs text-gray-400 mb-2">Menu</p>
+						<li class="" @click="closeSide()">
+							<nuxt-link
+								class="mobile px-3 py-4 text-sm justify-between flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
+								to="/"
+							>
+								<span>Beranda</span>
+								<svg
+									class="w-6 h-6"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M9 5l7 7-7 7"
+									></path>
+								</svg>
+							</nuxt-link>
+						</li>
+						<li class="" @click="closeSide()">
+							<nuxt-link
+								class="mobile px-3 py-4 text-sm justify-between flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
+								to="/produk"
+							>
+								<span>Produk</span>
+								<svg
+									class="w-6 h-6"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M9 5l7 7-7 7"
+									></path>
+								</svg>
+							</nuxt-link>
+						</li>
+						<li class="" @click="closeSide()">
+							<nuxt-link
+								class="mobile px-3 py-4 text-sm justify-between flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
+								to="/kontak"
+							>
+								<span>Kontak</span>
+								<svg
+									class="w-6 h-6"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M9 5l7 7-7 7"
+									></path>
+								</svg>
+							</nuxt-link>
+						</li>
+					</ul>
+					<ul
+						v-if="user"
+						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid"
+					>
+						<p class="text-xs text-gray-400 mb-2">Keluar</p>
+						<li class="">
+							<button
+								class="mobile w-full px-3 py-4 text-sm justify-between flex items-center bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-red-500 hover:text-gray-200 dark:text-gray-200 transition-colors duration-300"
+								@click="signOut()"
+							>
+								<span class="ml-3">Logout</span>
+								<svg
+									class="w-6 h-6"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+									></path>
+								</svg>
+							</button>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</transition>
+
+		<ClientProfile />
 	</div>
 </template>
 
@@ -88,7 +244,7 @@ export default {
 
 	computed: {
 		user() {
-			let user = this.$store.state.user
+			let user = this.$store.state.users.user
 			if (user && user.emailVerified) {
 				return user
 			} else {
@@ -105,6 +261,17 @@ export default {
 		},
 	},
 	methods: {
+		signOut() {
+			this.$fire.auth.signOut().then(() => {
+				this.closeSide()
+				this.$store.commit('users/RESET_STORE')
+				this.$store.commit('users/SET_CURRENT_USER', false)
+			})
+		},
+		closeSide() {
+			this.$store.commit('sideHandlers/setFabClicked')
+			this.$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', false)
+		},
 		toggleTheme() {
 			this.darkMode = !this.darkMode
 			let html = document.querySelector('html')
@@ -113,3 +280,9 @@ export default {
 	},
 }
 </script>
+
+<style>
+.mobile.nuxt-link-exact-active {
+	@apply text-indigo-500 bg-gray-100 dark:bg-gray-800;
+}
+</style>

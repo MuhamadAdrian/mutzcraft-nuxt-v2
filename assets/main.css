@@ -10,3 +10,27 @@
 .layout-leave {
 	@apply opacity-100 transform translate-y-0;
 }
+.slide-enter-active,
+.slide-leave-active {
+	@apply transition-transform duration-300;
+}
+.slide-enter,
+.slide-leave-to {
+	@apply transform -translate-x-full;
+}
+.slide-leave,
+.slide-enter-to {
+	@apply transform translate-x-0;
+}
+.fade-enter-active,
+.fade-leave-active {
+	@apply transition-opacity duration-500;
+}
+.fade-enter,
+.fade-leave-to {
+	@apply opacity-0;
+}
+.fade-leave,
+.fade-enter-to {
+	@apply opacity-50;
+}
