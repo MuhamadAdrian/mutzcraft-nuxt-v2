@@ -113,7 +113,7 @@ export default {
 	},
 	computed: {
 		showEditProfile() {
-			return this.$store.state.sideHandlers.showEditProfile
+			return this.$store.getters['sideHandlers/showEditProfile']
 		},
 	},
 

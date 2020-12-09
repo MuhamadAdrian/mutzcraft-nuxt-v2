@@ -68,7 +68,7 @@
 					</button>
 					<client-only>
 						<div
-							v-if="!currentUser || (user && !user.emailVerified)"
+							v-if="!currentUser || (user && !emailVerified)"
 							class="login mr-2"
 						>
 							<button
@@ -92,7 +92,7 @@
 								Daftar
 							</nuxt-link>
 						</div>
-						<div v-if="currentUser && !user.emailVerified" class="verification">
+						<div v-if="currentUser && !emailVerified" class="verification">
 							<nuxt-link
 								to="/auth/register/"
 								class="text-sm bg-yellow-100 text-yellow-700 my-auto inline-block px-4 py-2 hover:bg-yellow-200 transition-colors duration-200 rounded-md"
@@ -100,12 +100,12 @@
 								Verifikasi
 							</nuxt-link>
 						</div>
-						<div class="logout" v-if="currentUser && user.emailVerified">
+						<div class="logout" v-if="currentUser && emailVerified">
 							<button
 								@click="toggleSide()"
 								class="text-xs bg-gray-100 text-gray-600 my-auto flex items-center px-4 py-2 hover:bg-gray-300 transition-colors duration-200 rounded-md"
 							>
-								{{ user.displayName }}
+								{{ user.displayName | truncate(20) }}
 								<svg
 									class="w-6 h-6 ml-4"
 									fill="none"
@@ -137,6 +137,9 @@ export default {
 		return {}
 	},
 	computed: {
+		emailVerified() {
+			return this.$store.getters['users/emailVerified']
+		},
 		user() {
 			let user = this.$store.state.users.user
 			if (user) {

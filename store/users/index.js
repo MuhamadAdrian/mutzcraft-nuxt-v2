@@ -1,5 +1,3 @@
-import Cookie from 'js-cookie'
-
 export const state = () => ({
   message: null,
   success: null,
@@ -9,7 +7,17 @@ export const state = () => ({
   currentUser: false,
   timer: null,
   showCountdown: false,
+  emailVerified: false,
 })
+
+export const getters = {
+  message: (state) => state.message,
+  timer: (state) => state.timer,
+  hasLogin: (state) => state.hasLogin,
+  hasRegistered: (state) => state.hasRegistered,
+  success: (state) => state.success,
+  emailVerified: (state) => state.emailVerified,
+}
 
 export const actions = {
   resendEmail({ commit }) {
@@ -106,15 +114,24 @@ export const actions = {
               emailVerified: user.emailVerified,
             })
             .then(() => {
-              user.getIdToken(true).then((token) => {
-                Cookie.set('access_token', token)
-              })
-              let message = {}
-              message.success = true
-              message.errMsg = `Authenticated as ${user.email}`
-              commit('UPDATE_USER', user)
-              commit('SET_MESSAGE', message)
-              commit('SET_HAS_LOGIN', true)
+              user
+                .updateProfile({
+                  emailVerified: user.emailVerified,
+                })
+                .then(() => {
+                  let message = {}
+                  message.success = true
+                  message.errMsg = `Authenticated as ${user.email}`
+                  commit('SET_MESSAGE', message)
+                  commit('SET_HAS_LOGIN', true)
+                  window.location.reload()
+                })
+                .catch((err) => {
+                  let message = {}
+                  message.success = false
+                  message.errMsg = err.message
+                  commit('SET_MESSAGE', message)
+                })
             })
             .catch((err) => {
               let message = {}
@@ -134,15 +151,14 @@ export const actions = {
 }
 
 export const mutations = {
+  SET_EMAIL_VERIFIED(state, payload) {
+    state.emailVerified = payload
+  },
+
   RESET_STORE: (state) => {
-    Cookie.remove('access_token')
     state.user = null
     state.message = null
     state.success = null
-  },
-
-  UPDATE_USER: (state, authUser) => {
-    state.user = authUser
   },
 
   SET_AUTH_USER: (state, { authUser }) => {

@@ -4,6 +4,7 @@ export const state = () => ({
 })
 
 export const getters = {
+  showEditProfile: (state) => state.showEditProfile,
   fabClicked: (state) => state.fabClicked,
 }
 

@@ -20,6 +20,27 @@ export default {
       },
     ],
   },
+  hooks: {
+    generate: {
+      async done(builder) {
+        // This makes sure nuxt generate does finish without running into a timeout issue.
+        // See https://github.com/nuxt-community/firebase-module/issues/93
+        const appModule = await import('./.nuxt/firebase/app.js')
+        const { session } = await appModule.default(
+          builder.options.firebase.config,
+          {
+            res: null,
+          }
+        )
+        try {
+          session.database().goOffline()
+        } catch (e) {}
+        try {
+          session.firestore().terminate()
+        } catch (e) {}
+      },
+    },
+  },
 
   //layout transition
   layoutTransition: {
@@ -31,7 +52,7 @@ export default {
   css: ['~/assets/main.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/filter'],
 
   router: {
     middleware: ['authenticated'],
@@ -83,23 +104,17 @@ export default {
       firestore: {
         memoryOnly: false,
       },
+      database: {
+        emulatorPort: process.env.NODE_ENV === 'development' ? 9000 : false,
+      },
     },
   },
   pwa: {
-    // disable the modules you don't need
-    meta: false,
-    icon: false,
-    // if you omit a module key form configuration sensible defaults will be applied
-    // manifest: false,
-
     workbox: {
-      importScripts: [
-        // ...
-        '/firebase-auth-sw.js',
-      ],
+      importScripts: ['/firebase-auth-sw.js'],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
       // only set this true for testing and remember to always clear your browser cache in development
-      dev: false,
+      dev: process.env.NODE_ENV === 'development',
     },
   },
   // Modules (https://go.nuxtjs.dev/config-modules)

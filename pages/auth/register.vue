@@ -59,7 +59,7 @@ export default {
 
 	computed: {
 		message() {
-			return this.$store.state.users.message
+			return this.$store.getters.message
 		},
 	},
 	methods: {

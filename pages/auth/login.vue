@@ -68,10 +68,10 @@ export default {
 
 	computed: {
 		message() {
-			return this.$store.state.users.message
+			return this.$store.getters['users/message']
 		},
 		timer() {
-			return this.$store.state.users.timer
+			return this.$store.getters['users/timer']
 		},
 	},
 	methods: {

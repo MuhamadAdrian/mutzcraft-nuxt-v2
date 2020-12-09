@@ -67,7 +67,7 @@
 
 				<div
 					@click="$router.push('/auth/login/')"
-					v-if="!user"
+					v-if="user && !emailVerified"
 					class="p-2 bg-indigo-500 shadow-md text-white rounded-md flex items-center"
 				>
 					<img
@@ -79,6 +79,7 @@
 				</div>
 				<client-only>
 					<button
+						v-if="user && emailVerified"
 						@click="$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', true)"
 						class="flex w-full box-border truncate items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
 					>
@@ -92,13 +93,13 @@
 							<p
 								class="text-base font-semibold text-gray-600 truncate dark:text-gray-100"
 							>
-								{{ user.displayName }}
+								{{ user.displayName | truncate(25) }}
 							</p>
 							<p class="text-xs text-gray-400 mb-3 truncate dark:text-gray-400">
-								{{ user.email }}
+								{{ user.email | truncate(35) }}
 							</p>
 							<p
-								v-if="user && user.emailVerified"
+								v-if="user && emailVerified"
 								class="text-xs flex justify-between items-center font-semibold text-indigo-500"
 							>
 								<span> EXP 100 </span>
@@ -198,7 +199,7 @@
 						</li>
 					</ul>
 					<ul
-						v-if="user"
+						v-if="user && emailVerified"
 						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid"
 					>
 						<p class="text-xs text-gray-400 mb-2">Keluar</p>
@@ -243,9 +244,12 @@ export default {
 	},
 
 	computed: {
+		emailVerified() {
+			return this.$store.getters['users/emailVerified']
+		},
 		user() {
 			let user = this.$store.state.users.user
-			if (user && user.emailVerified) {
+			if (user) {
 				return user
 			} else {
 				return ''
@@ -264,6 +268,7 @@ export default {
 		signOut() {
 			this.$fire.auth.signOut().then(() => {
 				this.closeSide()
+				this.$store.commit('users/SET_EMAIL_VERIFIED', false)
 				this.$store.commit('users/RESET_STORE')
 				this.$store.commit('users/SET_CURRENT_USER', false)
 			})

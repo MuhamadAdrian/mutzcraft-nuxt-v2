@@ -35,7 +35,7 @@ export default {
 	computed: {
 		hasLogin: {
 			get() {
-				return this.$store.state.users.hasLogin
+				return this.$store.getters['users/hasLogin']
 			},
 			set(newVal) {
 				this.$store.commit('users/SET_HAS_LOGIN', newVal)
@@ -43,7 +43,7 @@ export default {
 		},
 		hasRegistered: {
 			get() {
-				return this.$store.state.users.hasRegistered
+				return this.$store.getters['users/hasRegistered']
 			},
 			set(newVal) {
 				this.$store.commit('users/SET_HAS_REGISTERED', newVal)
@@ -51,12 +51,12 @@ export default {
 		},
 		success: {
 			get() {
-				return this.$store.state.users.success
+				return this.$store.getters['users/success']
 			},
 		},
 		message: {
 			get() {
-				return this.$store.state.users.message
+				return this.$store.getters['users/message']
 			},
 			set(newVal) {
 				this.$store.commit('users/SET_MESSAGE', {
@@ -77,7 +77,6 @@ export default {
 		hasLogin(hasLogin) {
 			if (hasLogin) {
 				setTimeout(() => {
-					this.$router.replace('/')
 					this.hasLogin = false
 				}, 2000)
 			}
