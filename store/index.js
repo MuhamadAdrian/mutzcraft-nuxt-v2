@@ -4,7 +4,7 @@ export const actions = {
     if (res && res.locals && res.locals.user) {
       const { allClaims: claims, ...authUser } = res.locals.user
 
-      console.log(
+      console.info(
         'Auth User verified on server-side. User: ',
         authUser,
         'Claims:',
@@ -32,6 +32,7 @@ export const actions = {
       commit('users/RESET_STORE')
       return
     }
+    commit('upload/SET_CURRENT_IMAGE_URL', authUser.photoURL)
     commit('users/SET_AUTH_USER', { authUser })
     commit('users/SET_CURRENT_USER', true)
     if (authUser.emailVerified) {

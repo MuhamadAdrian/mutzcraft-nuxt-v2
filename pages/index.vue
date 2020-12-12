@@ -18,6 +18,10 @@
 		<section class="py-8 dark:bg-gray-900 transition-colors duration-300">
 			<HowWeActuallyWork />
 		</section>
+
+		<section class="py-8">
+			<div class=""></div>
+		</section>
 	</div>
 </template>
 

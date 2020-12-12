@@ -7,9 +7,6 @@ module.exports = {
       'pages/**/*.vue',
       'plugins/**/*.js',
       'nuxt.config.js',
-      // TypeScript
-      'plugins/**/*.ts',
-      'nuxt.config.ts',
     ],
   },
   darkMode: 'class', // or 'media' or 'class'
@@ -18,6 +15,9 @@ module.exports = {
   },
   variants: {
     animation: ['responsive', 'motion-safe', 'motion-reduce'],
+    extend: {
+      backgroundColor: ['active'],
+    },
   },
   plugins: [],
 }

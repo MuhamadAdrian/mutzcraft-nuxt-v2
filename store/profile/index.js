@@ -1,3 +1,11 @@
+export const state = () => ({
+  isUpdating: false,
+})
+
+export const getters = {
+  isUpdating: (state) => state.isUpdating,
+}
+
 export const actions = {
   updateProfile({ commit }, profile) {
     profile.updated_at = Date.now()
@@ -18,6 +26,7 @@ export const actions = {
             let message = {}
             message.success = true
             message.errMsg = 'Your profile has been updated'
+            commit('SET_IS_UPDATING', false)
             commit('users/SET_MESSAGE', message, { root: true })
             commit('users/UPDATE_USER_FROM_JWT', profile, { root: true })
           })
@@ -34,5 +43,11 @@ export const actions = {
         message.errMsg = err
         commit('users/SET_MESSAGE', message, { root: true })
       })
+  },
+}
+
+export const mutations = {
+  SET_IS_UPDATING(state, isTrue) {
+    state.isUpdating = isTrue
   },
 }

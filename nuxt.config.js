@@ -19,6 +19,12 @@ export default {
           'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap',
       },
     ],
+    script: [
+      {
+        src:
+          'https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js',
+      },
+    ],
   },
   hooks: {
     generate: {
@@ -32,9 +38,9 @@ export default {
             res: null,
           }
         )
-        try {
+        /*try {
           session.database().goOffline()
-        } catch (e) {}
+        } catch (e) {}*/
         try {
           session.firestore().terminate()
         } catch (e) {}
@@ -67,12 +73,12 @@ export default {
         prefix: 'Client',
       },
       {
-        path: '~/components/admin/',
-        prefix: 'Admin',
-      },
-      {
         path: '~/components/auth/',
         prefix: 'Auth',
+      },
+      {
+        path: '~/components/admin/',
+        prefix: 'Admin',
       },
     ],
   },
@@ -104,9 +110,7 @@ export default {
       firestore: {
         memoryOnly: false,
       },
-      database: {
-        emulatorPort: process.env.NODE_ENV === 'development' ? 9000 : false,
-      },
+      storage: true,
     },
   },
   pwa: {
