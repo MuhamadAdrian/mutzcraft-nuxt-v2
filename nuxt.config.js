@@ -59,6 +59,12 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: ['~/plugins/filter'],
+  serverMiddleware: [
+    {
+      path: '/api',
+      handler: '~/api/custom-claims',
+    },
+  ],
 
   router: {
     middleware: ['authenticated'],

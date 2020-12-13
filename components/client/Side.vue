@@ -81,7 +81,7 @@
 					<button
 						v-if="user && emailVerified"
 						@click="$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', true)"
-						class="flex w-full box-border truncate items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
+						class="flex w-full box-border items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
 					>
 						<img
 							v-if="user && !user.photoURL"
@@ -89,7 +89,13 @@
 							alt=""
 							class="w-16 h-16 rounded-full object-cover object-center mr-3"
 						/>
-						<div class="desc text-left">
+						<img
+							v-if="user && user.photoURL"
+							:src="user.photoURL"
+							alt=""
+							class="w-16 h-16 rounded-full object-cover object-center mr-3"
+						/>
+						<div class="desc text-left w-full">
 							<p
 								class="text-base font-semibold text-gray-600 truncate dark:text-gray-100"
 							>
@@ -98,11 +104,11 @@
 							<p class="text-xs text-gray-400 mb-3 truncate dark:text-gray-400">
 								{{ user.email | truncate(35) }}
 							</p>
-							<p
+							<div
 								v-if="user && emailVerified"
 								class="text-xs flex justify-between items-center font-semibold text-indigo-500"
 							>
-								<span> EXP 100 </span>
+								<p>EXP 100</p>
 								<span>
 									<svg
 										class="w-6 h-6"
@@ -119,7 +125,7 @@
 										></path>
 									</svg>
 								</span>
-							</p>
+							</div>
 						</div>
 					</button>
 				</client-only>

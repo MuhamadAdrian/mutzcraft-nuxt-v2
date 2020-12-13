@@ -28,7 +28,7 @@
 		<button
 			class="px-4 relative py-2 rounded-md bg-pink-500 text-white flex items-center"
 		>
-			<span class="mr-3">Produk Kami </span>
+			<span @click="request()" class="mr-3">Produk Kami </span>
 			<svg
 				class="w-6 h-6 relative"
 				fill="none"
@@ -49,3 +49,21 @@
 		</button>
 	</div>
 </template>
+
+<script>
+export default {
+	methods: {
+		request() {
+			this.$axios({
+				method: 'post',
+				url: '/api/create-custom-claims',
+				headers: {},
+				data: {
+					uid: 'anu',
+					test: 'asdasdasd',
+				},
+			}).then((res) => console.log(res))
+		},
+	},
+}
+</script>

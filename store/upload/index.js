@@ -21,9 +21,13 @@ export const actions = {
         .refFromURL(url)
         .delete()
         .then(() => {
+          console.log('current image deleted')
           resolve(true)
         })
-        .catch((err) => reject(err))
+        .catch((err) => {
+          console.log('failed to delete image')
+          reject(err)
+        })
     })
   },
 

@@ -4,7 +4,7 @@ export const actions = {
     if (res && res.locals && res.locals.user) {
       const { allClaims: claims, ...authUser } = res.locals.user
 
-      console.info(
+      console.log(
         'Auth User verified on server-side. User: ',
         authUser,
         'Claims:',

@@ -1,6 +1,10 @@
 <template>
 	<div>
 		<client-only>
+			<div
+				slot="placeholder"
+				class="w-full h-20 bg-gray-100 animate-pulse"
+			></div>
 			<li
 				v-if="user && emailVerified"
 				@click="toggleTreeview()"
