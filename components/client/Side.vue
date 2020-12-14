@@ -67,7 +67,7 @@
 
 				<div
 					@click="$router.push('/auth/login/')"
-					v-if="user && !emailVerified"
+					v-if="user && !user.emailVerified"
 					class="p-2 bg-indigo-500 shadow-md text-white rounded-md flex items-center"
 				>
 					<img
@@ -79,7 +79,7 @@
 				</div>
 				<client-only>
 					<button
-						v-if="user && emailVerified"
+						v-if="user && user.emailVerified"
 						@click="$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', true)"
 						class="flex w-full box-border items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
 					>
@@ -105,7 +105,7 @@
 								{{ user.email | truncate(35) }}
 							</p>
 							<div
-								v-if="user && emailVerified"
+								v-if="user && user.emailVerified"
 								class="text-xs flex justify-between items-center font-semibold text-indigo-500"
 							>
 								<p>EXP 100</p>
@@ -241,6 +241,7 @@
 </template>
 
 <script>
+import { auth } from '~/services/firebase'
 export default {
 	name: 'Side',
 	data() {
@@ -271,8 +272,13 @@ export default {
 		},
 	},
 	methods: {
+		asd() {
+			auth.currentUser.updateProfile({
+				photoURL: null,
+			})
+		},
 		signOut() {
-			this.$fire.auth.signOut().then(() => {
+			auth.signOut().then(() => {
 				this.closeSide()
 				this.$store.commit('users/SET_EMAIL_VERIFIED', false)
 				this.$store.commit('users/RESET_STORE')

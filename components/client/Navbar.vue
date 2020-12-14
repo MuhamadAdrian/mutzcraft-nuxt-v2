@@ -68,7 +68,7 @@
 					</button>
 					<client-only>
 						<div
-							v-if="!currentUser || (user && !emailVerified)"
+							v-if="!user || (user && !user.emailVerified)"
 							class="login mr-2"
 						>
 							<button
@@ -84,7 +84,7 @@
 						>
 							Loading
 						</button>
-						<div v-if="!currentUser" class="register">
+						<div v-if="!user" class="register">
 							<nuxt-link
 								to="/auth/register/"
 								class="text-sm text-indigo-500 my-auto inline-block px-4 py-2 hover:text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 rounded-md"
@@ -92,7 +92,7 @@
 								Daftar
 							</nuxt-link>
 						</div>
-						<div v-if="currentUser && !emailVerified" class="verification">
+						<div v-if="user && !user.emailVerified" class="verification">
 							<nuxt-link
 								to="/auth/register/"
 								class="text-sm bg-yellow-100 text-yellow-700 my-auto inline-block px-4 py-2 hover:bg-yellow-200 transition-colors duration-200 rounded-md"
@@ -100,7 +100,7 @@
 								Verifikasi
 							</nuxt-link>
 						</div>
-						<div class="logout" v-if="currentUser && emailVerified">
+						<div class="logout" v-if="user && user.emailVerified">
 							<button
 								@click="toggleSide()"
 								class="text-xs bg-gray-100 text-gray-600 my-auto flex items-center px-4 py-2 hover:bg-gray-300 transition-colors duration-200 rounded-md"

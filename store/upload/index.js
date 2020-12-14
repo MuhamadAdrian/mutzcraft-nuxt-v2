@@ -1,3 +1,5 @@
+import { storage } from '~/services/firebase'
+
 export const state = () => ({
   file: null,
   imageURL: null,
@@ -17,7 +19,7 @@ export const actions = {
   deleteCurrentImage({ state, commit }, payload) {
     return new Promise((resolve, reject) => {
       let url = state.currentImageURL
-      this.$fire.storage
+      storage
         .refFromURL(url)
         .delete()
         .then(() => {
@@ -34,7 +36,7 @@ export const actions = {
   uploadFile({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       let file = state.file
-      let storageRef = this.$fire.storage.ref('profiles/' + file.name)
+      let storageRef = storage.ref('profiles/' + file.name)
       let uploadTask = storageRef.put(file)
       uploadTask.on(
         'state_changed',

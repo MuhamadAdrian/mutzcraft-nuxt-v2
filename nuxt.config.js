@@ -26,27 +26,6 @@ export default {
       },
     ],
   },
-  hooks: {
-    generate: {
-      async done(builder) {
-        // This makes sure nuxt generate does finish without running into a timeout issue.
-        // See https://github.com/nuxt-community/firebase-module/issues/93
-        const appModule = await import('./.nuxt/firebase/app.js')
-        const { session } = await appModule.default(
-          builder.options.firebase.config,
-          {
-            res: null,
-          }
-        )
-        /*try {
-          session.database().goOffline()
-        } catch (e) {}*/
-        try {
-          session.firestore().terminate()
-        } catch (e) {}
-      },
-    },
-  },
 
   //layout transition
   layoutTransition: {
@@ -58,11 +37,11 @@ export default {
   css: ['~/assets/main.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/filter'],
+  plugins: ['~/plugins/filter', '~/plugins/auth'],
   serverMiddleware: [
     {
       path: '/api',
-      handler: '~/api/custom-claims',
+      handler: '~/api/users',
     },
   ],
 
@@ -93,32 +72,8 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/firebase',
   ],
 
-  firebase: {
-    config: {
-      apiKey: 'AIzaSyC-9N8H9VasX89il9t4Sd-NSM3ZB5_5PJQ',
-      authDomain: 'mutzcraft-nuxt.firebaseapp.com',
-      projectId: 'mutzcraft-nuxt',
-      storageBucket: 'mutzcraft-nuxt.appspot.com',
-      messagingSenderId: '944843167176',
-      appId: '1:944843167176:web:a1567c5e33eeb371569cfd',
-      measurementId: 'G-GCFV2NZ59N',
-    },
-    services: {
-      auth: {
-        initialize: {
-          onAuthStateChangedAction: 'onAuthStateChanged',
-        },
-        ssr: true,
-      },
-      firestore: {
-        memoryOnly: false,
-      },
-      storage: true,
-    },
-  },
   pwa: {
     workbox: {
       importScripts: ['/firebase-auth-sw.js'],

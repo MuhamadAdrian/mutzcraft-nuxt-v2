@@ -101,6 +101,26 @@
 							<span class="ml-3">Produk</span>
 						</nuxt-link>
 					</li>
+					<li>
+						<nuxt-link
+							class="mobile py-3 px-4 text-sm text-gray-600 flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
+							to="/admin/manage-users"
+						>
+							<svg
+								class="fill-current"
+								xmlns="http://www.w3.org/2000/svg"
+								height="24"
+								viewBox="0 0 24 24"
+								width="24"
+							>
+								<path d="M0 0h24v24H0z" fill="none" />
+								<path
+									d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"
+								/>
+							</svg>
+							<span class="ml-3">Manage Users</span>
+						</nuxt-link>
+					</li>
 				</ul>
 				<div class="container mx-auto px-4 absolute bottom-0 left-0 p-3 w-full">
 					<ul

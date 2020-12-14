@@ -142,6 +142,7 @@
 
 <script>
 import { uploadHandler } from '@/plugins/mixin'
+import { auth, db } from '~/services/firebase'
 export default {
 	mixins: [uploadHandler],
 	data() {
@@ -172,10 +173,9 @@ export default {
 		},
 
 		loadData() {
-			let user = this.$fire.auth.currentUser
+			let user = auth.currentUser
 			if (user) {
-				this.$fire.firestore
-					.collection('users')
+				db.collection('users')
 					.doc(user.uid)
 					.onSnapshot((doc) => {
 						this.user = doc.data()

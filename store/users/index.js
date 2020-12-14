@@ -1,3 +1,6 @@
+import { auth, db } from '~/services/firebase'
+import Cookie from 'js-cookie'
+
 export const state = () => ({
   message: null,
   success: null,
@@ -21,7 +24,7 @@ export const getters = {
 
 export const actions = {
   resendEmail({ commit }) {
-    let user = this.$fire.auth.currentUser
+    let user = auth.currentUser
     user.sendEmailVerification().then(() => {
       let message = {}
       message.success = true
@@ -31,11 +34,10 @@ export const actions = {
     })
   },
   createNewUser({ commit }, payload) {
-    this.$fire.auth
+    auth
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then((res) => {
         let user = res.user
-        let db = this.$fire.firestore
         db.collection('users')
           .doc(user.uid)
           .set({
@@ -56,12 +58,23 @@ export const actions = {
                 user
                   .sendEmailVerification()
                   .then(() => {
-                    let message = {}
-                    message.success = true
-                    message.errMsg = `Success, please check your email "${user.email}" to verify your account :)`
-                    commit('SET_MESSAGE', message)
-                    commit('SET_HAS_REGISTERED', true)
-                    commit('SET_COUNTDOWN')
+                    user
+                      .getIdToken(true)
+                      .then((idToken) => {
+                        Cookie.set('access_token', idToken)
+                        let message = {}
+                        message.success = true
+                        message.errMsg = `Success, please check your email "${user.email}" to verify your account :)`
+                        commit('SET_MESSAGE', message)
+                        commit('SET_HAS_REGISTERED', true)
+                        commit('SET_COUNTDOWN')
+                      })
+                      .catch((err) => {
+                        let message = {}
+                        message.success = false
+                        message.errMsg = err.message
+                        commit('SET_MESSAGE', message)
+                      })
                   })
                   .catch((err) => {
                     let message = {}
@@ -93,7 +106,7 @@ export const actions = {
   },
 
   loginAction({ commit, dispatch, state }, { email, password }) {
-    this.$fire.auth
+    auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         let user = res.user
@@ -107,7 +120,6 @@ export const actions = {
           commit('SET_MESSAGE', message)
           commit('SET_HAS_LOGIN', false)
         } else {
-          let db = this.$fire.firestore
           db.collection('users')
             .doc(user.uid)
             .update({
@@ -119,12 +131,25 @@ export const actions = {
                   emailVerified: user.emailVerified,
                 })
                 .then(() => {
-                  let message = {}
-                  message.success = true
-                  message.errMsg = `Authenticated as ${user.email}`
-                  commit('SET_MESSAGE', message)
-                  commit('SET_HAS_LOGIN', true)
-                  window.location.reload()
+                  user
+                    .getIdToken(true)
+                    .then((token) => {
+                      let cookie = Cookie.get('access_token')
+                      if (cookie) Cookie.remove('access_token')
+                      Cookie.set('access_token', token)
+                      let message = {}
+                      message.success = true
+                      message.errMsg = `Authenticated as ${user.email}`
+                      commit('SET_MESSAGE', message)
+                      commit('SET_HAS_LOGIN', true)
+                      window.location.reload()
+                    })
+                    .catch((err) => {
+                      let message = {}
+                      message.success = false
+                      message.errMsg = err.message
+                      commit('SET_MESSAGE', message)
+                    })
                 })
                 .catch((err) => {
                   let message = {}

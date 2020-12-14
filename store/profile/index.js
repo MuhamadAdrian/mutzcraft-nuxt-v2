@@ -1,3 +1,5 @@
+import { db, auth } from '~/services/firebase'
+
 export const state = () => ({
   isUpdating: false,
 })
@@ -9,12 +11,11 @@ export const getters = {
 export const actions = {
   updateProfile({ commit }, profile) {
     profile.updated_at = Date.now()
-    this.$fire.firestore
-      .collection('users')
+    db.collection('users')
       .doc(profile.uid)
       .update(profile)
       .then(() => {
-        this.$fire.auth.currentUser
+        auth.currentUser
           .updateProfile({
             displayName: profile.displayName,
             phoneNumber: profile.phoneNumber,
