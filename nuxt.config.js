@@ -19,12 +19,6 @@ export default {
           'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap',
       },
     ],
-    script: [
-      {
-        src:
-          'https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js',
-      },
-    ],
   },
 
   //layout transition
@@ -37,7 +31,7 @@ export default {
   css: ['~/assets/main.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/filter', '~/plugins/auth'],
+  plugins: ['~/plugins/filter', { src: '~/plugins/auth', mode: 'client' }],
   serverMiddleware: [
     {
       path: '/api',
@@ -79,7 +73,6 @@ export default {
       importScripts: ['/firebase-auth-sw.js'],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
       // only set this true for testing and remember to always clear your browser cache in development
-      dev: process.env.NODE_ENV === 'development',
     },
   },
   // Modules (https://go.nuxtjs.dev/config-modules)

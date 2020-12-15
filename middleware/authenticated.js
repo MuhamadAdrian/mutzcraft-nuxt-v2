@@ -7,7 +7,12 @@ export default function ({ store, route, redirect }) {
     redirect('/')
   } else if (!user && route.path.match(adminRoute)) {
     redirect('/')
-  } else if (route.path.match(adminRoute) && user && !user.emailVerified) {
+  } else if (
+    route.path.match(adminRoute) &&
+    user &&
+    user.emailVerified &&
+    !user.isAdmin
+  ) {
     redirect('/')
   }
 }

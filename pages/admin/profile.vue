@@ -80,7 +80,7 @@
 						<input
 							type="text"
 							class="py-2 border border-gray-200 focus-within:border-gray-400 focus:outline-none px-4 text-sm rounded-md"
-							placeholder="Email"
+							placeholder="Phone"
 							v-model="user.phoneNumber"
 						/>
 					</div>
@@ -94,7 +94,8 @@
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import { uploadHandler } from '@/plugins/mixin'
+import { uploadHandler } from '~/plugins/mixin'
+import { auth, db } from '~/services/firebase'
 export default {
 	layout: 'admin',
 	mixins: [uploadHandler],
@@ -112,12 +113,11 @@ export default {
 		...mapGetters({ isUpdating: 'profile/isUpdating' }),
 	},
 
-	mounted() {
-		let user = this.$fire.auth.currentUser
+	created() {
+		let user = auth.currentUser
 		if (user) {
 			this.$store.commit('upload/SET_IMAGE_HAS_CHANGED', false)
-			this.$fire.firestore
-				.collection('users')
+			db.collection('users')
 				.doc(user.uid)
 				.onSnapshot((doc) => {
 					this.user = doc.data()

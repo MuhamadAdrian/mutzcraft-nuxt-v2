@@ -6,7 +6,7 @@
 				class="w-full h-20 bg-gray-100 animate-pulse"
 			></div>
 			<li
-				v-if="user && emailVerified"
+				v-if="user && user.emailVerified"
 				@click="toggleTreeview()"
 				class="treeview-button cursor-pointer list-none"
 			>
@@ -52,7 +52,7 @@
 						</svg>
 					</div>
 				</div>
-				<transition name="layout" mode="out-in">
+				<transition name="fade-down" mode="out-in">
 					<ul
 						v-if="toggle"
 						class="list-none treeview max-h-full bg-gray-50 mb-5"
@@ -126,4 +126,18 @@ export default {
 </script>
 
 <style scoped>
+.fade-down-enter-active,
+.fade-down-leave-active {
+	transition: transform 0.35s, opacity 0.35s;
+}
+.fade-down-enter,
+.fade-down-leave-to {
+	opacity: 0;
+	transform: translateY(-20px);
+}
+.fade-down-enter-to,
+.fade-down-leave {
+	opacity: 1;
+	transform: translateY(0px);
+}
 </style>

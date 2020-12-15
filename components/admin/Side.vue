@@ -124,7 +124,7 @@
 				</ul>
 				<div class="container mx-auto px-4 absolute bottom-0 left-0 p-3 w-full">
 					<ul
-						v-if="user && emailVerified"
+						v-if="user && user.emailVerified"
 						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid"
 					>
 						<p class="text-xs text-gray-400 mb-2">Keluar</p>
@@ -158,6 +158,7 @@
 </template>
 
 <script>
+import { auth } from '~/services/firebase'
 export default {
 	name: 'Side',
 	data() {
@@ -184,8 +185,7 @@ export default {
 	},
 	methods: {
 		signOut() {
-			this.$fire.auth.signOut().then(() => {
-				this.closeSide()
+			auth.signOut().then(() => {
 				this.$store.commit('users/SET_EMAIL_VERIFIED', false)
 				this.$store.commit('users/RESET_STORE')
 				this.$store.commit('users/SET_CURRENT_USER', false)

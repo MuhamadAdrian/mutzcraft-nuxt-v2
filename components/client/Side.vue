@@ -205,7 +205,7 @@
 						</li>
 					</ul>
 					<ul
-						v-if="user && emailVerified"
+						v-if="user && user.emailVerified"
 						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid"
 					>
 						<p class="text-xs text-gray-400 mb-2">Keluar</p>

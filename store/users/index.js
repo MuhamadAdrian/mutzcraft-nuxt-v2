@@ -181,6 +181,7 @@ export const mutations = {
   },
 
   RESET_STORE: (state) => {
+    Cookie.remove('access_token')
     state.user = null
     state.message = null
     state.success = null
