@@ -17,7 +17,9 @@
 					<header
 						class="border-b-2 border-gray-50 dark:border-gray-700 dark:border-opacity-10 transition-colors duration-300 py-2 flex items-center justify-between"
 					>
-						<h2 class="text-gray-600 font-semibold text-2xl dark:text-gray-400">
+						<h2
+							class="text-gray-600 font-semibold text-2xl dark:text-gray-400"
+						>
 							Mutzcraft
 						</h2>
 						<transition name="fade" mode="out-in">
@@ -80,7 +82,12 @@
 				<client-only>
 					<button
 						v-if="user && user.emailVerified"
-						@click="$store.commit('sideHandlers/TOGGLE_EDIT_PROFILE', true)"
+						@click="
+							$store.commit(
+								'sideHandlers/TOGGLE_EDIT_PROFILE',
+								true
+							)
+						"
 						class="flex w-full box-border items-center dark:hover:bg-gray-800 p-4 hover:bg-gray-100"
 					>
 						<img
@@ -101,7 +108,9 @@
 							>
 								{{ user.displayName | truncate(25) }}
 							</p>
-							<p class="text-xs text-gray-400 mb-3 truncate dark:text-gray-400">
+							<p
+								class="text-xs text-gray-400 mb-3 truncate dark:text-gray-400"
+							>
 								{{ user.email | truncate(35) }}
 							</p>
 							<div
@@ -298,7 +307,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .mobile.nuxt-link-exact-active {
 	@apply text-indigo-500 bg-gray-100 dark:bg-gray-800;
 }

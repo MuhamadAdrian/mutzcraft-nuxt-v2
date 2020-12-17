@@ -36,20 +36,4 @@ app.post('/set-custom-claims', (req, res) => {
     })
 })
 
-app.post('/getUsers', (req, res) => {
-  const listAllUsers = (nextPageToken) => {
-    admin
-      .auth()
-      .listUsers(1, nextPageToken)
-      .then((listUsersResult) => {
-        res.status(200).send(listUsersResult).end()
-      })
-  }
-  if (req.body.nextPageToken) {
-    listAllUsers(req.body.nextPageToken)
-  } else {
-    listAllUsers()
-  }
-})
-
 module.exports = app

@@ -10,7 +10,9 @@
 					<header
 						class="dark:border-gray-700 dark:border-opacity-10 transition-colors duration-300 py-2 flex items-center justify-between"
 					>
-						<h2 class="text-gray-600 font-semibold text-2xl dark:text-gray-400">
+						<h2
+							class="text-gray-600 font-semibold text-2xl dark:text-gray-400"
+						>
 							Mutzcraft
 						</h2>
 						<transition name="fade" mode="out-in">
@@ -63,29 +65,8 @@
 				></AdminUserInfo>
 				<ul class="list-none mb-3">
 					<p class="text-xs text-gray-400 mb-2 ml-4">Menu</p>
-					<li>
-						<nuxt-link
-							class="mobile py-3 px-4 text-sm text-gray-600 flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
-							to="/admin"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="fill-current"
-								height="24"
-								viewBox="0 0 24 24"
-								width="24"
-							>
-								<path d="M0 0h24v24H0z" fill="none" />
-								<path d="M3 19h6v-7H3v7zm7 0h12v-7H10v7zM3 5v6h19V5H3z" />
-							</svg>
-							<span class="ml-3">Dashboard</span>
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							class="mobile py-3 px-4 text-sm text-gray-600 flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
-							to="/admin/produk"
-						>
+					<DynamicLink title="Produk" hasTreeview>
+						<template v-slot:icon>
 							<svg
 								class="fill-current"
 								xmlns="http://www.w3.org/2000/svg"
@@ -98,14 +79,50 @@
 									d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"
 								/>
 							</svg>
-							<span class="ml-3">Produk</span>
-						</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link
-							class="mobile py-3 px-4 text-sm text-gray-600 flex items-center hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors duration-300"
-							to="/admin/manage-users"
-						>
+						</template>
+						<template v-slot:list>
+							<DynamicLink
+								title="Semua Produk"
+								href="/admin/produk/"
+							>
+								<template v-slot:icon>
+									<svg
+										class="fill-current"
+										xmlns="http://www.w3.org/2000/svg"
+										height="24"
+										viewBox="0 0 24 24"
+										width="24"
+									>
+										<path d="M0 0h24v24H0z" fill="none" />
+										<path
+											d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"
+										/>
+									</svg>
+								</template>
+							</DynamicLink>
+							<DynamicLink
+								title="Produk Diskon"
+								href="/admin/produk-diskon/"
+							>
+								<template v-slot:icon>
+									<svg
+										class="fill-current"
+										xmlns="http://www.w3.org/2000/svg"
+										height="24"
+										viewBox="0 0 24 24"
+										width="24"
+									>
+										<path d="M0 0h24v24H0z" fill="none" />
+										<path
+											d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"
+										/>
+									</svg>
+								</template>
+							</DynamicLink>
+						</template>
+					</DynamicLink>
+					<DynamicLink title="Dashboard" href="/admin/">
+						<template v-slot:icon>
 							<svg
 								class="fill-current"
 								xmlns="http://www.w3.org/2000/svg"
@@ -118,11 +135,31 @@
 									d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"
 								/>
 							</svg>
-							<span class="ml-3">Manage Users</span>
-						</nuxt-link>
-					</li>
+						</template>
+					</DynamicLink>
+					<DynamicLink
+						title="Manage Users"
+						href="/admin/manage-users"
+					>
+						<template v-slot:icon>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="fill-current"
+								height="24"
+								viewBox="0 0 24 24"
+								width="24"
+							>
+								<path d="M0 0h24v24H0z" fill="none" />
+								<path
+									d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+								/>
+							</svg>
+						</template>
+					</DynamicLink>
 				</ul>
-				<div class="container mx-auto px-4 absolute bottom-0 left-0 p-3 w-full">
+				<div
+					class="container mx-auto px-4 absolute bottom-0 left-0 p-3 w-full"
+				>
 					<ul
 						v-if="user && user.emailVerified"
 						class="list-none divide divide-y-2 divide-gray-50 dark:divide-gray-800 divide-solid"
@@ -159,6 +196,7 @@
 
 <script>
 import { auth } from '~/services/firebase'
+import DynamicLink from '../DynamicLink.vue'
 export default {
 	name: 'Side',
 	data() {
@@ -201,7 +239,4 @@ export default {
 </script>
 
 <style scoped>
-.mobile.nuxt-link-exact-active {
-	@apply text-indigo-500 bg-gray-100 dark:bg-gray-800;
-}
 </style>

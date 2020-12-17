@@ -27,7 +27,9 @@
 					</li>
 				</ul>
 				<div class="brand text-indigo-400">
-					<a href="#" class="sm:text-xl text-lg font-semibold">Mutzcraft</a>
+					<a href="#" class="sm:text-xl text-lg font-semibold"
+						>Mutzcraft</a
+					>
 				</div>
 				<div class="tool flex items-center">
 					<button
@@ -92,7 +94,10 @@
 								Daftar
 							</nuxt-link>
 						</div>
-						<div v-if="user && !user.emailVerified" class="verification">
+						<div
+							v-if="user && !user.emailVerified"
+							class="verification"
+						>
 							<nuxt-link
 								to="/auth/register/"
 								class="text-sm bg-yellow-100 text-yellow-700 my-auto inline-block px-4 py-2 hover:bg-yellow-200 transition-colors duration-200 rounded-md"

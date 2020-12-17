@@ -5,7 +5,7 @@
 		<ClientFooter />
 		<ClientFab />
 		<ToggleTheme />
-		<Toast />
+		<Toast class="right-0 md:mr-3" />
 	</div>
 </template>
 
