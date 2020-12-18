@@ -6,6 +6,7 @@
 			:to="href"
 		>
 			<slot name="icon"> </slot>
+
 			<span class="ml-3">{{ title }}</span>
 		</nuxt-link>
 		<p
@@ -16,7 +17,6 @@
 			<slot name="icon"> </slot>
 			<span class="ml-3">{{ title }}</span>
 			<span
-				v-if="hasTreeview"
 				class="icon ml-auto transition-transform duration-300 dark:text-white"
 				:class="{ 'transform rotate-180': toggle }"
 			>
@@ -36,6 +36,7 @@
 		</p>
 		<ul
 			v-if="hasTreeview"
+			ref="menu"
 			:style="'height:' + height"
 			class="list-none treeview bg-gray-50 dark:bg-gray-700"
 		>
@@ -70,9 +71,9 @@ export default {
 	methods: {
 		toggleTreeview() {
 			this.toggle = !this.toggle
-			const list = document.querySelector('.treeview-button > ul')
+			const menu = this.$refs.menu
 			if (this.toggle) {
-				this.height = list.scrollHeight + 'px'
+				this.height = menu.scrollHeight + 'px'
 			} else {
 				this.height = 0 + 'px'
 			}
