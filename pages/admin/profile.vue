@@ -57,7 +57,9 @@
 						</p>
 					</div>
 					<div class="flex flex-col mb-4">
-						<label class="text-xs text-gray-400 mb-1">Username</label>
+						<label class="text-xs text-gray-400 mb-1"
+							>Username</label
+						>
 						<input
 							type="text"
 							class="py-2 border border-gray-200 focus-within:border-gray-400 focus:outline-none px-4 text-sm rounded-md"
