@@ -197,20 +197,25 @@ export default {
 	},
 
 	computed: {
-		pageSize: {
+		/*pageSize: {
 			get() {
 				return this.$store.state.products.pageSize
 			},
 			set(value) {
 				this.$store.commit('products/SET_PAGE_SIZE', value)
 			},
+        },
+
+            ...mapGetters({ productLength: 'products/length' }),
+            maxItem() {
+                return this.productLength
+            },*/
+		...mapGetters({ products: 'products/products' }),
+		lastProduct() {
+			return this.$store.state.products.lastProduct
 		},
-		products() {
-			return this.$store.state.products.products
-		},
-		...mapGetters({ productLength: 'products/length' }),
-		maxItem() {
-			return this.productLength
+		firstProduct() {
+			return this.$store.state.products.firstProduct
 		},
 	},
 
@@ -218,8 +223,34 @@ export default {
 		/*loadAgainWhenSizeIsChange() {
 			this.$store.dispatch('products/getProductsWithFilter')
         },*/
-		getNext() {},
-		getPrev() {},
+		async getNext() {
+
+				let docs = await this.$store.dispatch(
+					'products/getNext',
+					this.lastProduct
+				)
+
+				if (docs.length) {
+					this.$store.commit('products/RESET_PRODUCTS')
+					docs.forEach((doc) => {
+						this.$store.commit('products/SET_PRODUCTS', doc.data())
+					})
+				}
+
+		},
+		async getPrev() {
+			let docs = await this.$store.dispatch(
+				'products/getPrev',
+				this.firstProduct
+			)
+
+			if (docs.length) {
+				this.$store.commit('products/RESET_PRODUCTS')
+				docs.forEach((doc) => {
+					this.$store.commit('products/SET_PRODUCTS', doc.data())
+				})
+			}
+		},
 	},
 
 	mounted() {
